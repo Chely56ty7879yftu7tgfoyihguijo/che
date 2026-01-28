@@ -1,12 +1,17 @@
 ﻿#include <iostream>
+#include <fstream>
 using namespace std;
 
 int main() {
+    setlocale(LC_ALL, "rus");
     srand(time(NULL));
-    cout << "Napishi stroki massiva >\n";
+  
     int a;
+    ifstream fin("size.txt");       // связываем объект с файлом
+fin >>a; // запись строки в файл
+fin.close(); // закрываем файл
+
     int** dir;
-    cin >> a;
 
     dir = new int* [a];
 
@@ -19,7 +24,6 @@ int main() {
         }
     }
 
-    // Вывод исходной матрицы
     cout << "Исходная матрица:\n";
     for (int i = 0; i < a; i++) {
         for (int j = 0; j < a; j++) {
@@ -44,13 +48,13 @@ int main() {
             for (int i = 0; i < a; i++) {
                 sum += dir[i][i];
             }
-            cout << "Сумма главной диагонали: " << sum << "\n"[web:10];
+            cout << "Сумма главной диагонали: " << sum << "\n";
             break;
         }
         case 2: {
-            int max_above = dir[0][1];  // max выше диагонали (i < j)
+            int max_above = dir[0][1];
             pair<int, int> pos_above = { 0,1 };
-            int max_below = dir[1][0];  // max ниже (i > j)
+            int max_below = dir[1][0];
             pair<int, int> pos_below = { 1,0 };
 
             // Поиск max выше
@@ -62,7 +66,6 @@ int main() {
                     }
                 }
             }
-            // Поиск max ниже
             for (int i = 1; i < a; i++) {
                 for (int j = 0; j < i; j++) {
                     if (dir[i][j] > max_below) {
@@ -71,7 +74,6 @@ int main() {
                     }
                 }
             }
-            // Меняем местами
             swap(dir[pos_above.first][pos_above.second], dir[pos_below.first][pos_below.second]);
             cout << "Макс элементы выше и ниже диагонали поменяны местами.\n";
             cout << "Матрица после операции 2:\n";
@@ -84,7 +86,6 @@ int main() {
             break;
         }
         case 3: {
-            // Найти глобальный min элемент и его позицию
             int min_val = dir[0][0];
             int min_col = 0;
             for (int i = 0; i < a; i++) {
@@ -97,7 +98,6 @@ int main() {
             }
             cout << "Минимальный элемент: " << min_val << " в столбце " << min_col << "\n";
 
-            // Из столбцов после min_col вычесть min_val
             for (int j = min_col + 1; j < a; j++) {
                 for (int i = 0; i < a; i++) {
                     dir[i][j] -= min_val;
